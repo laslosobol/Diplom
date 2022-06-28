@@ -1,0 +1,133 @@
+﻿@model IEnumerable<Diplom.Core.Entities.Order>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+@if (false)
+{
+    <h2>title</h2>
+
+    <table class="table">
+        <tr><th>Order</th><th>Total Price</th><th></th></tr>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.TotalPrice</td>
+                <td>
+                    <a class="btn btn-sm btn-primary" asp-action="TakeOrder" asp-route-id="@order.Id">Order</a>
+                </td>
+            </tr>
+        }
+    </table>
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Кошик</title>
+</head>
+<style>
+    body {
+        background: linear-gradient(89.99deg, #F1D9BC 7.87%, #B8ECDF 91.53%);
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+
+    .order-box {
+        margin: 3rem 4rem;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
+    }
+
+    .order-box__content {
+        margin: 3rem 4rem;
+        padding: 1rem;
+    }
+    .order-box__content__item {
+        display: flex;
+        background-color: white;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 32px;
+        margin-bottom: 3rem;
+    }
+    .order-box__content__item div {
+        font-weight: bold;
+    }
+
+    .order-box__content__item > div:nth-of-type(1) {
+        margin-left: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .order-box__content__item > div:nth-last-of-type(1) {
+        margin-right: 5rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+    .order-box__content__item__title {
+        font-size: 24px;
+        font-weight: bold;
+    }
+    .order-box__content__item__price, .order-box__content__item__quantity, .order-box__content__item__total-price, .order-box__content__item__x {
+        font-size: 24px;
+        line-height: 32px;
+    }
+    .order-box__total-price {
+        font-size: 36px;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        font-weight: bold;
+    }
+    .order-box__submit-button {
+        margin-top: 2rem;
+    }
+    .order-box__submit-button-input {
+        padding: 16px;
+        font-size: 16px;
+        color: white;
+        background: rgba(179, 228, 217, 1);
+        width: 100%;
+        border-color: transparent;
+        border-radius: 32px;
+        display: block;
+        text-align: center;
+    }
+</style>
+<div class="order-box">
+    <div class="order-box__content">
+        <div class-="order-box__content__title">
+            <h1>Доступні замовлення</h1>
+        </div>
+        <div class="order-box__content__items">
+            @foreach(var order in Model)
+            {
+                <div class="order-box__content__item">
+                    <div class="order-box__content__item__image">
+                        <img src="https://static.overlay-tech.com/assets/60260616-5dfb-4e1b-a969-524df5f3512f.png">
+                    </div>
+                    <div class="order-box__content__item__title">
+                        @order.Id
+                    </div>
+                    <div class="order-box__content__item__price">
+                        @order.TotalPrice
+                    </div>
+                    <div class="order-box__content__item__quantity">
+                    </div>
+                    <div class="order-box__content__item__total-price">
+                    </div>
+                    <div class="order-box__submit-button">
+                        <a class="order-box__submit-button-input" asp-action="TakeOrder" asp-route-id="@order.Id">Взати в обробку</a>
+                    </div>
+                </div> 
+            }
+        </div>
+    </div>
+</div>
+</html>

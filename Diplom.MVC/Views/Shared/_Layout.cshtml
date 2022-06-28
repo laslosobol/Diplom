@@ -1,0 +1,130 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Diplom.Core.Entities
+@using IdentityServer4.Extensions
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - Diplom.MVC</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <!--<link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>-->
+    <link rel="stylesheet" href="~/Diplom.MVC.styles.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true"/>
+</head>
+<style>
+    header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 10px 36px;
+        gap: 1460px;
+        position: relative;
+        width: 1920px;
+        height: 62px;
+        
+        background: linear-gradient(89.99deg, #F1D9BC 7.87%, #B8ECDF 91.53%);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .header-logo {
+        width: 160px;
+    }
+    .header-icons {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 0px;
+        gap: 36px;
+    }
+    .header-shopping-bag {
+        width: 24px;
+        height: 24px;
+    }
+</style>
+<body>
+<header>
+    <div class="header-logo">
+        <a asp-action="Index" asp-controller="Home">
+            <img
+                alt=""
+                class="vector"
+                src="https://localhost:7013/Vector.png"/>
+        </a>
+    </div>
+    <div class="header-icons">
+        @if (User.IsAuthenticated())
+        {
+            if (User.IsInRole("Customer"))
+            {
+                <div class="header-shopping-bag">
+                    <a asp-action="OrderHistoryCustomer" asp-controller="Order">
+                        <img
+                            alt=""
+                            class="header-shopping-bag"
+                            src="https://localhost:7013/shopping-bag.png"/>
+                    </a>
+                </div>
+                <div class="header-shopping-bag">
+                    <a asp-action="Index" asp-controller="Cart">
+                        <img
+                            alt=""
+                            class="header-shopping-bag"
+                            src="https://localhost:7013/shopping-bag.png"/>
+                    </a>
+                </div> 
+            }
+            if (User.IsInRole("Courier"))
+            {
+                <div class="header-shopping-bag">
+                    <a asp-action="AvailableOrders" asp-controller="Order">
+                        <img
+                            alt=""
+                            class="header-shopping-bag"
+                            src="https://localhost:7013/shopping-bag.png"/>
+                    </a>
+                </div>
+                <div class="header-user">
+                    <a asp-action="CourierOrders" asp-controller="Order">
+                        <img
+                            alt=""
+                            class="header-user"
+                            src="https://localhost:7013/user.png"/>
+                    </a>
+                </div>
+            }
+            <div class="header-user">
+                <a asp-action="Profile" asp-controller="Account">
+                    <img
+                        alt=""
+                        class="header-user"
+                        src="https://localhost:7013/user.png"/>
+                </a>
+            </div>
+            <div class="header-user">
+                <form method="post" asp-controller="Account" asp-action="Logout">
+                    <input type="submit" value="Logout">
+                </form> 
+            </div>
+        }else
+        {
+            <div class="header-shopping-bag">
+                <a asp-action="Login" asp-controller="Account">
+                    <img
+                        alt=""
+                        class="header-shopping-bag"
+                        src="https://localhost:7013/shopping-bag.png"/>
+                </a>
+            </div>
+        }
+    </div>
+</header>
+<div class="container">
+    @RenderBody()
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,152 @@
+﻿@model Tuple<Guid, List<string>, List<int>, List<double>, double>
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+@if (false)
+{
+    <h2>title</h2>
+    <table class="table">
+        <tr>
+            <th>Good</th><th>Amount</th><th>Price per unit</th><th></th>
+        </tr>
+        @for (var i = 0; i < Model.Item2.Count; i++)
+        {
+            <tr>
+                <td>@Model.Item2[i]</td>
+                <td>@Model.Item3[i]</td>
+                <td>@Model.Item4[i]</td>
+                <td></td>
+            </tr>
+        }
+        <td>
+            <b>Total Price</b>
+        </td><td></td><td>@Model.Item5</td>
+        <td>
+            <a class="btn btn-sm btn-primary" asp-action="OrderCart" asp-route-id="@Model.Item1">Order</a>
+        </td>
+    </table>
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Кошик</title>
+</head>
+<style>
+    body {
+        background: linear-gradient(89.99deg, #F1D9BC 7.87%, #B8ECDF 91.53%);
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+
+    .order-box {
+        margin: 3rem 4rem;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
+    }
+
+    .order-box__content {
+        margin: 3rem 4rem;
+        padding: 1rem;
+    }
+    .order-box__content__item {
+        display: flex;
+        background-color: white;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 32px;
+        margin-bottom: 3rem;
+    }
+    .order-box__content__item div {
+        font-weight: bold;
+    }
+
+    .order-box__content__item > div:nth-of-type(1) {
+        margin-left: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .order-box__content__item > div:nth-last-of-type(1) {
+        margin-right: 5rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+    .order-box__content__item__title {
+        font-size: 36px;
+        font-weight: bold;
+    }
+    .order-box__content__item__price, .order-box__content__item__quantity, .order-box__content__item__total-price, .order-box__content__item__x {
+        font-size: 24px;
+        line-height: 32px;
+    }
+    .order-box__total-price {
+        font-size: 36px;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        font-weight: bold;
+    }
+    .order-box__submit-button {
+        margin-top: 2rem;
+    }
+    .order-box__submit-button > a {
+        padding: 16px;
+        font-size: 16px;
+        color: white;
+        background: rgba(179, 228, 217, 1);
+        width: 100%;
+        border-color: transparent;
+        border-radius: 32px;
+        display: block;
+        text-align: center;
+    }
+</style>
+<div class="order-box">
+    <div class="order-box__content">
+        <div class-="order-box__content__title">
+            <h1>Замовлення</h1>
+        </div>
+        <div class-="order-box__content__subtitle">
+            <h4>Перегляньте склад замовлення та заповніть поля нижче</h4>
+        </div>
+        <div class="order-box__content__items">
+            @for (var i = 0; i < Model.Item2.Count; i++)
+            {
+                <div class="order-box__content__item">
+                    <div class="order-box__content__item__image">
+                        <img src="Rectangle 4.png">
+                    </div>
+                    <div class="order-box__content__item__title">
+                        @Model.Item2[i]
+                    </div>
+                    <div class="order-box__content__item__price">
+                        @Model.Item4[i]
+                    </div>
+                    <div class="order-box__content__item__quantity">
+                        @Model.Item3[i]
+                    </div>
+                    <div class="order-box__content__item__total-price">
+                        @(Model.Item3[i]*Model.Item4[i])
+                    </div>
+                    <div class="order-box__content__item__x">
+                        X
+                    </div>
+                </div> 
+            }
+        </div>
+        <div class="order-box__total-price">
+            <div>Загальна вартість</div>
+            <div>@Model.Item5</div>
+        </div>
+        <div class="order-box__submit-button">
+            <a role="button" asp-action="OrderCart" asp-route-id="@Model.Item1">Перейти до оплати</a>
+        </div>
+    </div>
+</div>
+</html>

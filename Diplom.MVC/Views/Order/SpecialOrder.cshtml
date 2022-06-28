@@ -1,0 +1,29 @@
+﻿@model Diplom.MVC.ViewModels.SpecialOrderViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>title</h2>
+<form method="post" asp-controller="Order" asp-action="SpecialOrder">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div>
+        <label asp-for="Description"></label><br/>
+        <input asp-for="Description"/>
+        <span asp-validation-for="Description"></span>
+    </div>
+    <div>
+        <label asp-for="Location"></label><br/>
+        <input asp-for="Location"/>
+    </div>
+    <h3>Upload Receipt</h3>
+    @using (Html.BeginForm("Upload", "Order", FormMethod.Post, new {enctype="multipart/form-data"}))
+    {
+        <input type="file" asp-for="ReceiptPicture" /><br>
+        <input type="submit" value="Завантажити чек" />
+    }
+    <div>
+        <input type="submit" value="Create Order"/>
+    </div>
+</form>

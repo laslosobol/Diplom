@@ -1,0 +1,116 @@
+﻿@startuml
+'https://plantuml.com/class-diagram
+
+class IdentityUser{}
+note left : Standart IdentityUser class from IdentityUser assembly
+
+interface IRepository<T>
+{
+    Task<T> GetByIdAsync(params object[] id);
+    Task InsertAsync(T entity);
+    void Delete(T entity);
+    void Update(T entity); 
+}
+interface IUnitOfWork
+{
+    IRepository<User> UserRepository
+    IRepository<Customer> CustomerRepository
+    IRepository<Courier> CourierRepository
+    IRepository<Good> GoodRepository
+    IRepository<Order> OrderRepository
+    IRepository<Source> SourceRepository
+    IRepository<GoodOrder> GoodOrderRepository
+    
+    Task CommitAsync();
+    Task RollbackAsync();
+}
+class GenericRepository<T>
+{
+    private ApplicationDbContext _context;
+    protected DbSet<T> _dbSet;
+}
+IRepository <|.. GenericRepository
+
+class UnitOfWork{}
+IUnitOfWork <|.. UnitOfWork
+
+IUnitOfWork *-- IRepository
+UnitOfWork *-- IRepository
+
+class ApplicationDbContext
+{
+    DbSet<Customer> Customers
+    DbSet<Courier> Couriers
+    DbSet<Order> Orders
+    DbSet<Good> Goods
+    DbSet<Source> Sources
+    DbSet<GoodOrder> GoodOrders
+    
+    void OnModelCreating(ModelBuilder modelBuilder);
+}
+
+class User{
+    string Name
+    string Surname
+    string CreditCard
+}
+class Customer{
+    IEnumerable<Order> Orders
+}
+class Courier{
+    IEnumerable<Order> Orders
+}
+class Good{
+    Guid Id
+    string Name
+    Guid SourceId
+    Source Source 
+    double Price
+    IEnumerable<GoodOrder> GoodOrders
+}
+class GoodOrder{
+    Guid Id
+    Guid GoodId
+    Good Good 
+    Guid OrderId
+    Order Order 
+    int Amount
+    double GoodPrice
+}
+class Order{
+    Guid Id
+    DateTime CreatedOn
+    Status Status
+    Guid CustomerId
+    Customer Customer 
+    Guid CourierId
+    Courier Courier 
+    double TotalPrice
+    OrderType OrderType
+    PaymentType PaymentType
+    Point Location
+    IEnumerable<GoodOrder> GoodOrders
+}
+class Source{
+    Guid Id
+    string Name
+    IEnumerable<Good> Goods
+}
+
+IdentityUser <|-- User
+User <|-- Customer
+User <|-- Courier
+Order o-- GoodOrder
+Good o-- GoodOrder
+Good --o Source
+Order --o Customer
+Order --o Courier
+GenericRepository *-- ApplicationDbContext
+User --* ApplicationDbContext
+Order --* ApplicationDbContext
+GoodOrder --* ApplicationDbContext
+Customer --* ApplicationDbContext
+Courier --* ApplicationDbContext
+Source --* ApplicationDbContext
+
+@enduml

@@ -1,0 +1,330 @@
+﻿@{
+  ViewData["Title"] = "Home Page";
+  Layout = "_Layout";
+}
+@if (false)
+{
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
+    <form method="post" asp-controller="Account" asp-action="Logout">
+        <input type="submit" value="Logout">
+    </form> 
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Формування замовлення</title>
+</head>
+<style>
+    .home-main {
+        background: #FFFFFF;
+    }
+    .home-popular-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0px 208px;
+        gap: 60px;
+        left: calc(50% - 1919px/2);
+        top: 368px;
+    }
+    .home-popular-block-text {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 36px;
+        line-height: 48px;
+    }
+    .home-popular-block-cards {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+        gap: 99px;
+    }
+    .home-popular-block-cards-line {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+        gap: 101px;
+    }
+    .home-popular-block-cards-line-card {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 0px 100px;
+        gap: 8px;
+        
+        width: 300px;
+        height: 250px;
+        
+        background: #FFFFFF;
+        
+        box-shadow: 0px 5px 10px #B3E4D9;
+        border-radius: 32px;
+    }
+    . {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 16px;
+        gap: 8px;
+        
+        width: 162px;
+        height: 60px;
+        
+        /* Mint */
+        
+        background: #B3E4D9;
+        border-radius: 32px;
+    }
+    .home-popular-block-get-all {
+        margin-bottom: 1rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        background: #B3E4D9;
+        border-radius: 32px;
+        width: 275px; 
+        height: 60px;
+    }
+    .home-sub-footer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 59px 400px;
+        gap: 70px;
+        background: linear-gradient(89.99deg, #F1D9BC 7.87%, #B8ECDF 91.53%);
+    }
+    .home-sub-footer-title {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 36px;
+        line-height: 48px;
+    }
+    .home-sub-footer-block {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        padding: 0px;
+        gap: 110px;
+        
+        width: 1120px;
+        height: 350px;
+    }
+    .home-sub-footer-block-column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0px;
+        gap: 40px;
+        
+        width: 300px;
+        height: 350px;
+    }
+    .home-sub-footer-block-column-button {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        height: 60px;
+        background: #FFFFFF;
+        border-radius: 32px;
+        width: 260px;
+    }
+</style>
+<div class="home-main">
+    <div class="home-popular-block">
+        <div class="home-popular-block-text">
+            <h1>Популярні</h1>
+        </div>
+        <div class="home-popular-block-cards">
+            <div class="home-popular-block-cards-line">
+                <div class="home-popular-block-cards-line-card">
+                    <a asp-action="GetGoods" asp-controller="Source" asp-route-id="646dbf10-1997-4a0d-ac90-682c49d6d380">
+                        <img
+                            alt=""
+                            class=""
+                            src="tmc.png"/>
+                    </a>                    
+                </div>
+                <div class="home-popular-block-cards-line-card">
+                    <a asp-action="GetGoods" asp-controller="Source" asp-route-id="646dbf10-1997-4a0d-ac90-682c49d6d380">
+                        <img
+                            alt=""
+                            class=""
+                            src="tkfc.png"/>
+                    </a>                                    
+                </div>
+                <div class="home-popular-block-cards-line-card">
+                     <a asp-action="GetGoods" asp-controller="Source" asp-route-id="646dbf10-1997-4a0d-ac90-682c49d6d380">
+                         <img
+                             alt=""
+                             class=""
+                             src="q61xcy9ac4a4730e9a4f9e311b.png"/>
+                     </a>                                   
+                </div>
+                <div class="home-popular-block-cards-line-card">
+                    <a asp-action="GetGoods" asp-controller="Source" asp-route-id="646dbf10-1997-4a0d-ac90-682c49d6d380">
+                        <img
+                            alt=""
+                            class=""
+                            src="Без названия.png"/>
+                    </a>                                    
+                </div>
+            </div>
+            <div class="home-popular-block-cards-line">
+                <div class="home-popular-block-cards-line-card">
+                     <a asp-action="GetGoods" asp-controller="Source" asp-route-id="646dbf10-1997-4a0d-ac90-682c49d6d380">
+                         <img
+                             alt=""
+                             class=""
+                             src="bierwelle.png"/>
+                     </a>                               
+                </div>
+                <div class="home-popular-block-cards-line-card">
+                     <a asp-action="GetGoods" asp-controller="Source" asp-route-id="646dbf10-1997-4a0d-ac90-682c49d6d380">
+                         <img
+                             alt=""
+                             class=""
+                             src="tisp.png"/>
+                     </a>                                               
+                </div>
+                <div class="home-popular-block-cards-line-card">
+                     <a asp-action="GetGoods" asp-controller="Source" asp-route-id="646dbf10-1997-4a0d-ac90-682c49d6d380">
+                         <img
+                             alt=""
+                             class=""
+                             src="tatb.png"/>
+                     </a>                                               
+                </div>
+                <div class="home-popular-block-cards-line-card">
+                     <a asp-action="GetGoods" asp-controller="Source" asp-route-id="646dbf10-1997-4a0d-ac90-682c49d6d380">
+                         <img
+                             alt=""
+                             class=""
+                             src="7cf0b7bea70bdf4b4a22d55ea5180514-826x0.png"/>
+                     </a>                                               
+                </div>
+            </div>
+        </div>
+        <form asp-action="Index" asp-controller="Source"  method="get">
+            <input type="submit" value="Переглнути всіх" class="home-popular-block-get-all">
+        </form>
+    </div>
+    <div class="home-popular-block">
+        <div class="home-popular-block-text">
+            <h1>Доставляємо все і навіть більше</h1>
+        </div>
+        <div class="home-popular-block-cards">
+            <div class="home-popular-block-cards-line">
+                <div class="home-popular-block-cards-line-card">
+                    <img
+                        alt=""
+                        class=""
+                        src="tile.png"/>
+                </div>
+                <div class="home-popular-block-cards-line-card">
+                     <img
+                         alt=""
+                         class=""
+                         src="tile (1).png"/>                                             
+                </div>
+                <div class="home-popular-block-cards-line-card">
+                     <img
+                         alt=""
+                         class=""
+                         src="tile (2).png"/>                                             
+                </div>
+                <div class="home-popular-block-cards-line-card">
+                      <img
+                          alt=""
+                          class=""
+                          src="tile (3).png"/>                                            
+                </div>
+            </div>
+            <div class="home-popular-block-cards-line">
+                <div class="home-popular-block-cards-line-card">
+                    <img
+                        alt=""
+                        class=""
+                        src="tile (3).png"/>                                          
+                </div>
+                <div class="home-popular-block-cards-line-card">
+                    <img
+                        alt=""
+                        class=""
+                        src="tile (2).png"/>                                                         
+                </div>
+                <div class="home-popular-block-cards-line-card">
+                     <img
+                         alt=""
+                         class=""
+                         src="tile (1).png"/>                                                         
+                </div>
+                <div class="home-popular-block-cards-line-card">
+                    <img
+                        alt=""
+                        class=""
+                        src="tile.png"/>                                                          
+                </div>
+            </div>
+        </div>
+        <form asp-action="Index" asp-controller="Source"  method="get">
+            <input type="submit" value="Шукати заклади в моєму місті" class="home-popular-block-get-all">
+        </form>
+    </div>
+    <div class="home-sub-footer">
+        <div class="home-sub-footer-title">
+            <h1>Приєднатися до нас</h1>
+        </div>
+        <div class="home-sub-footer-block">
+            <div class="home-sub-footer-block-column">
+                <div class="home-popular-block-cards-line-card">
+                    <img
+                        alt=""
+                        class=""
+                        src="tile (4).png"/>
+                </div>
+                <form asp-action="Register" asp-controller="Account"  method="get">
+                    <input type="submit" value="Хочу бути кур’єром!" class="home-sub-footer-block-column-button">
+                </form>
+            </div>
+            <div class="home-sub-footer-block-column">
+                <div class="home-popular-block-cards-line-card">
+                    <img
+                        alt=""
+                        class=""
+                        src="tile (1).png"/>
+                </div>
+                <form asp-action="Register" asp-controller="Account"  method="get">
+                    <input type="submit" value="Хочу користуватись сервісом!" class="home-sub-footer-block-column-button">
+                </form>
+            </div>
+            <div class="home-sub-footer-block-column">
+                <div class="home-popular-block-cards-line-card">
+                    <img
+                        alt=""
+                        class=""
+                        src="tile (3).png"/>
+                </div>
+                <form asp-action="Privacy" asp-controller="Home"  method="get">
+                    <input type="submit" value="Хочу стати партнером" class="home-sub-footer-block-column-button">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

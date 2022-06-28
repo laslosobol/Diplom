@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Diplom.BLL.DTO.GoodDto>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Goods</h2>
+<a asp-action="Create">Add Good</a>
+
+<table class="table">
+<tr><th>GoodId</th><th>Name</th><th>Price</th><th></th></tr>
+@foreach (var good in Model)
+{
+    <tr>
+        <td>@good.Id</td>
+        <td>@good.Name</td>
+        <td>@good.Price</td>
+        <td>
+            <form asp-action="Delete" asp-route-id="@good.Id" method="post">
+                <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@good.Id">Update</a>
+                <button type="submit" class="btn btn-sm btn-danger">
+                    Delete
+                </button>
+            </form>
+        </td>
+    </tr>
+}
+</table>

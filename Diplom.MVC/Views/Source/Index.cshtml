@@ -1,0 +1,258 @@
+﻿@model IEnumerable<Diplom.BLL.DTO.SourceDto>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+@if (false)
+{
+    <h2>title</h2>
+
+    <a asp-action="Create">Add Source</a>
+
+    <table class="table">
+        <tr>
+            <th>Name</th><th></th>
+        </tr>
+        @foreach (var source in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="GetGoods" asp-route-id="@source.Id">@source.Name</a>
+                </td>
+                @if (User.IsInRole("Customer"))
+                {
+                    <td>
+                        <form asp-action="Delete" asp-route-id="@source.Id" method="post">
+                            <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@source.Id">Update</a>
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                }
+            </tr>
+        }
+    </table>
+}
+
+@if (false)
+{
+    <div class="block-1">
+        <h1 class="text-1">Популярні</h1>
+        <div class="cards">
+            <div class="line">
+                @foreach (var source in Model)
+                {
+                    <a asp-action="GetGoods" asp-route-id="@source.Id">
+                        <img
+                            alt=""
+                            class="tile"
+                            src="https://static.overlay-tech.com/assets/60260616-5dfb-4e1b-a969-524df5f3512f.png"/>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+}
+<style>
+    .home-main {
+        background: #FFFFFF;
+    }
+    .home-popular-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0px 208px;
+        gap: 60px;
+        left: calc(50% - 1919px/2);
+        top: 368px;
+    }
+    .home-popular-block-text {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 36px;
+        line-height: 48px;
+    }
+    .home-popular-block-cards {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+        gap: 99px;
+    }
+    .home-popular-block-cards-line {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+        gap: 101px;
+    }
+    .home-popular-block-cards-line-card {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 0px 100px;
+        gap: 8px;
+        
+        width: 300px;
+        height: 250px;
+        
+        background: #D52B1E;
+        
+        box-shadow: 0px 5px 10px #B3E4D9;
+        border-radius: 32px;
+    }
+    . {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 16px;
+        gap: 8px;
+        
+        width: 162px;
+        height: 60px;
+        
+        /* Mint */
+        
+        background: #B3E4D9;
+        border-radius: 32px;
+    }
+    .home-popular-block-get-all {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 16px;
+        gap: 8px;
+        background: #B3E4D9;
+        border-radius: 32px;
+        width: 275px; 
+        height: 60px;
+    }
+    .home-sub-footer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 59px 400px;
+        gap: 70px;
+        background: linear-gradient(89.99deg, #F1D9BC 7.87%, #B8ECDF 91.53%);
+    }
+    .home-sub-footer-title {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 36px;
+        line-height: 48px;
+    }
+    .home-sub-footer-block {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        padding: 0px;
+        gap: 110px;
+        
+        width: 1120px;
+        height: 350px;
+    }
+    .home-sub-footer-block-column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0px;
+        gap: 40px;
+        
+        width: 300px;
+        height: 350px;
+    }
+    .home-sub-footer-block-column-button {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 16px;
+        gap: 8px;
+        width: 193px;
+        height: 60px;
+        background: #FFFFFF;
+        border-radius: 32px;
+    }
+</style>
+
+<div class="home-main">
+    <div class="home-popular-block">
+        <div class="home-popular-block-text">
+            <h1>Оберіть постачальника</h1>
+        </div>
+        @for (var i = 0; i <= @Model.Count() / 4; i++)
+        {
+            <div class="home-popular-block-cards-line">
+                @if (i * 4 >= Model.Count())
+                {
+                    break;
+                }
+                else
+                {
+                    <div class="home-popular-block-cards-line-card">
+                        <a asp-action="GetGoods" asp-route-id="@Model.ToList()[i*4].Id">
+                            <img
+                                alt=""
+                                class=""
+                                src="https://static.overlay-tech.com/assets/60260616-5dfb-4e1b-a969-524df5f3512f.png"/>
+                        </a>
+                    </div>
+                }
+                @if (i * 4+1 >= Model.Count())
+                {
+                    break;
+                }
+                else
+                {
+                    <div class="home-popular-block-cards-line-card">
+                        <a asp-action="GetGoods" asp-route-id="@Model.ToList()[i*4+1].Id">
+                            <img
+                                alt=""
+                                class=""
+                                src="https://static.overlay-tech.com/assets/60260616-5dfb-4e1b-a969-524df5f3512f.png"/>
+                        </a>
+                    </div>
+                }
+                @if (i * 4+2 >= Model.Count())
+                {
+                    break;
+                }
+                else
+                {
+                    <div class="home-popular-block-cards-line-card">
+                        <a asp-action="GetGoods" asp-route-id="@Model.ToList()[i*4+2].Id">
+                            <img
+                                alt=""
+                                class=""
+                                src="https://static.overlay-tech.com/assets/60260616-5dfb-4e1b-a969-524df5f3512f.png"/>
+                        </a>
+                    </div>
+                }
+                @if (i * 4+3 >= Model.Count())
+                {
+                    break;
+                }
+                else
+                {
+                    <div class="home-popular-block-cards-line-card">
+                        <a asp-action="GetGoods" asp-route-id="@Model.ToList()[i*4+3].Id">
+                            <img
+                                alt=""
+                                class=""
+                                src="https://static.overlay-tech.com/assets/60260616-5dfb-4e1b-a969-524df5f3512f.png"/>
+                        </a>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

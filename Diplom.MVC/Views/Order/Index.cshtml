@@ -1,0 +1,321 @@
+﻿@using Diplom.Core.Entities
+@model Diplom.MVC.ViewModels.TakeOrderViewModel
+
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtsOlwTkruhPyPMv6zGdfkLRc5rZQqa5k"></script>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+@if (false)
+{
+    @switch (Model.Status)
+    {
+        case Status.New:
+            <h2>New</h2>
+            break;
+        case Status.InProgress:
+            <h2>InProgress</h2>
+            break;
+        case Status.Delivered:
+            <h2>Delivered</h2>
+            break;
+        case Status.Canceled:
+            <h2>Canceled</h2>
+            break;
+    }
+
+
+    <table class="table">
+        <tr>
+            <th>Good</th><th>Source</th><th>Amount</th><th></th>
+        </tr>
+        @for (var i = 0; i < Model.GoodDesc.Item1.Count; i++)
+        {
+            <tr>
+                <td>@Model.GoodDesc.Item1[i]</td>
+                <td>@Model.GoodDesc.Item2[i]</td>
+                <td>@Model.GoodDesc.Item3[i]</td>
+                <td></td>
+            </tr>
+        }
+        <td>
+            <b>Total Price</b>
+        </td><td></td><td>@Model.TotalPrice</td>
+        <td>
+            @if (Model.Status == Status.New)
+            {
+                <form asp-action="CancelOrder" asp-route-id="@Model" method="post">
+                    <div class="form-group">
+                        <input type="hidden" asp-for="CourierId"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" asp-for="OrderId"/>
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        Cancel Order
+                    </button>
+                </form>
+            }
+        </td>
+    </table>
+
+    <div id="MapDiv" style="width: 500px; height: 500px">
+    </div>
+@section Scripts
+{
+    <script>
+    $.ajax({
+        url: '/Order/GetMarker/@Model.OrderId',
+        type: 'GET',
+        success: function (data) {
+        //create a blank array
+        var marker = {};
+        marker.x = data.x;
+        marker.y = data.y;    
+        //call Map function with all markers passed as list of arrays
+        initializeMap(marker);}
+    });
+    function initializeMap(marker) {
+                //you can check your marker data in console
+                console.log(marker);
+                //Create Google map options
+                var GoogleMapOptions = {
+                    center: new google.maps.LatLng(marker.x, marker.y),
+                    zoom: 6,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                var infoWindow = new google.maps.InfoWindow();
+                var map = new google.maps.Map(document.getElementById("MapDiv"), GoogleMapOptions);
+    
+                var mapMarker = new google.maps.Marker({
+                    position: new google.maps.LatLng(marker.x, marker.y),
+                    map: map,
+                    draggable: true,
+                    title: "Delivery Location"
+                })
+            }
+    </script>
+}
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Кошик</title>
+</head>
+<style>
+    body {
+        background: linear-gradient(89.99deg, #F1D9BC 7.87%, #B8ECDF 91.53%);
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+
+    .order-box {
+        margin: 3rem 4rem;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
+    }
+
+    .order-box__content {
+        margin: 3rem 4rem;
+        padding: 1rem;
+    }
+    .order-box__content__item {
+        display: flex;
+        background-color: white;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 32px;
+        margin-bottom: 3rem;
+    }
+    .order-box__content__item div {
+        font-weight: bold;
+    }
+
+    .order-box__content__item > div:nth-of-type(1) {
+        margin-left: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .order-box__content__item > div:nth-last-of-type(1) {
+        margin-right: 5rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+    .order-box__content__item__title {
+        font-size: 36px;
+        font-weight: bold;
+    }
+    .order-box__content__item__price, .order-box__content__item__quantity, .order-box__content__item__total-price, .order-box__content__item__x {
+        font-size: 24px;
+        line-height: 32px;
+    }
+    .order-box__total-price {
+        font-size: 36px;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        font-weight: bold;
+    }
+    .order-box__submit-button {
+        margin-top: 2rem;
+    }
+    .order-box__submit-button {
+        padding: 16px;
+        font-size: 16px;
+        color: white;
+        background: rgba(179, 228, 217, 1);
+        width: 100%;
+        border-color: transparent;
+        border-radius: 32px;
+        display: block;
+        text-align: center;
+    }
+    .order-box-content-details-block-map-form {
+        box-sizing: border-box;
+        border-radius: 20px;
+        border: 2px solid;
+        border-image-source: linear-gradient(89.99deg, #F1D9BC 7.87%, #B8ECDF 91.53%);
+    }
+    .order-box-content-details-block-map{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0px;
+        gap: 40px;
+    }
+    .order-box-content-details-block-map-title{
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 36px;
+        line-height: 48px;
+        width: 100%;
+    }
+</style>
+<div class="order-box">
+    <div class="order-box__content">
+        <div class-="order-box__content__title">
+            <h1>Замовлення</h1>
+        </div>
+        <div class-="order-box__content__subtitle">
+            @switch (Model.Status)
+            {
+                case Status.New:
+                    <h2>Статус: Нове</h2>
+                    break;
+                case Status.InProgress:
+                    <h2>Статус: В обробці</h2>
+                    break;
+                case Status.Delivered:
+                    <h2>Статус: Доставлено</h2>
+                    break;
+                case Status.Canceled:
+                    <h2>Статус: Скасовано</h2>
+                    break;
+            }
+        </div>
+        <div class="order-box__content__items">
+            @for (var i = 0; i < Model.GoodDesc.Item1.Count; i++)
+            {
+                <div class="order-box__content__item">
+                    <div class="order-box__content__item__image">
+                        <img src="./Rectangle 4.png">
+                    </div>
+                    <div class="order-box__content__item__title">
+                        @Model.GoodDesc.Item1[i]
+                    </div>
+                    <div class="order-box__content__item__price">
+                        @Model.GoodDesc.Item2[i]
+                    </div>
+                    <div class="order-box__content__item__quantity">
+                        @Model.GoodDesc.Item3[i]
+                    </div>
+                    <div class="order-box__content__item__x">
+                        X
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="order-box-content-details-block-map">
+            <div class="order-box-content-details-block-map-title">
+                <h1>Місце доставки</h1>
+            </div>
+            <div class="order-box-content-details-block-map-form">
+                <div id="MapDiv" style="width: 500px; height: 500px">
+                </div>
+            </div>
+        </div>
+        <div class="order-box__total-price">
+            <div>Загальна вартість</div>
+            <div>@Model.TotalPrice</div>
+        </div>
+        @if (@Model.Status == Status.New && User.IsInRole("Customer"))
+        {
+            <form asp-action="CancelOrder" asp-route-id="@Model" method="post">
+                <div class="form-group">
+                    <input type="hidden" asp-for="CourierId"/>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" asp-for="OrderId"/>
+                </div>
+                <input class="order-box__submit-button" type="submit" value="Відміна замовлення">
+            </form>
+        }
+        @if (@Model.Status == Status.InProgress && User.IsInRole("Courier"))
+        {
+            <form asp-action="FinishOrder" asp-route-id="@Model" method="post">
+                <div class="form-group">
+                    <input type="hidden" asp-for="CourierId"/>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" asp-for="OrderId"/>
+                </div>
+                <input class="order-box__submit-button" type="submit" value="Здати замовлення">
+            </form>
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+    $.ajax({
+        url: '/Order/GetMarker/@Model.OrderId',
+        type: 'GET',
+        success: function (data) {
+        //create a blank array
+        var marker = {};
+        marker.x = data.x;
+        marker.y = data.y;    
+        //call Map function with all markers passed as list of arrays
+        initializeMap(marker);}
+    });
+    function initializeMap(marker) {
+                //you can check your marker data in console
+                console.log(marker);
+                //Create Google map options
+                var GoogleMapOptions = {
+                    center: new google.maps.LatLng(marker.x, marker.y),
+                    zoom: 6,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                var infoWindow = new google.maps.InfoWindow();
+                var map = new google.maps.Map(document.getElementById("MapDiv"), GoogleMapOptions);
+    
+                var mapMarker = new google.maps.Marker({
+                    position: new google.maps.LatLng(marker.x, marker.y),
+                    map: map,
+                    draggable: true,
+                    title: "Delivery Location"
+                })
+            }
+    </script>
+}
+
+</html>

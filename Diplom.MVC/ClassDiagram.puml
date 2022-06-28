@@ -1,0 +1,117 @@
+﻿@startuml
+'https://plantuml.com/class-diagram
+
+class BaseController{}
+class AccountController{
+    UserManager<User> _userManager
+    SignInManager<User> _signInManager
+    AccountService _accountService
+    IActionResult Register()
+    Task<IActionResult> Register()
+    IActionResult Login()
+    Task<IActionResult> Login()
+    Task<IActionResult> Logout()
+}
+class UserController{
+    UserManager<User> _userManager
+    UserService _userService
+    IActionResult Index()
+    IActionResult Create()
+    Task<IActionResult> Create()
+    IActionResult Edit()
+    Task<IActionResult> Edit()
+    Task<IActionResult> Delete()
+    IActionResult ChangePassword()
+    Task<IActionResult> ChangePassword()
+    }
+class SourceController{
+    SourceService _sourceService
+    Task<IActionResult> Index()
+    RedirectToRouteResult GetGoods()
+    IActionResult Create()
+    Task<IActionResult> Create()
+    IActionResult Edit()
+    Task<IActionResult> Edit()
+    Task<IActionResult> Delete()
+    }
+class GoodController{
+    GoodService _goodService
+    Task<IActionResult> Index()
+                                       RedirectToRouteResult GetGoods()
+                                       IActionResult Create()
+                                       Task<IActionResult> Create()
+                                       IActionResult Edit()
+                                       Task<IActionResult> Edit()
+                                       Task<IActionResult> Delete()
+                                       Task<IActionResult> AddToCart()
+}
+class OrderController{
+    OrderService _orderService
+    Task<IActionResult> Index()
+    Task<IActionResult> AvailableOrders()
+    IActionResult TakeOrder()
+    Task<IActionResult> TakeOrder()
+    Task<IActionResult> OrderHistoryCustomer
+    Task<IActionResult> CancelOrder
+    IActionResult OrderCart()
+    Task<IActionResult> OrderCart()
+}
+class Program{
+    WebApplication app
+    WebApplicationBuilder builder
+}
+BaseController <|-- AccountController
+BaseController <|-- UserController
+BaseController <|-- SourceController
+BaseController <|-- GoodController
+BaseController <|-- OrderController
+
+class ChangePasswordViewModel {
+    public string Id 
+    public string Email 
+    public string NewPassword 
+    public string OldPassword 
+}
+ChangePasswordViewModel <-- UserController
+class EditUserViewModel {
+    public string Id 
+    public string Email 
+    public string CardNumber
+}
+EditUserViewModel <-- UserController
+class LoginViewModel {
+    public string Email 
+    public string Password 
+    public bool RememberMe 
+}
+LoginViewModel <-- AccountController
+class OrderCartViewModel {
+    public Guid Id 
+    public Point Location 
+}
+OrderCartViewModel <-- OrderController
+class RegisterViewModel {
+    public string Name 
+    public string Surname 
+    public string Email 
+    public string Password 
+    public string PasswordConfirm 
+    public bool IsCourier 
+    public bool IsCustomer 
+}
+RegisterViewModel <-- AccountController
+class TakeOrderViewModel {
+    public Guid CourierId 
+    public Guid OrderId 
+    public double TotalPrice 
+    public Status Status 
+    public Tuple<List<string>, List<string>, List<int>> GoodDesc 
+}
+TakeOrderViewModel <-- OrderController
+class CreateUserViewModel {
+    public string Email 
+    public string Password 
+}
+CreateUserViewModel <-- UserController
+
+@enduml

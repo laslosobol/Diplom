@@ -1,0 +1,147 @@
+﻿@startuml
+'https://plantuml.com/class-diagram
+
+class UserDto{
+     string Name
+     string Surname
+     string CreditCard
+}
+class GoodDto
+{
+     Guid Id
+     string Name
+     Guid SourceId
+     double Price
+}
+class GoodOrderDto
+{
+     Guid Id
+     Guid GoodId
+
+     Guid OrderId
+ 
+     int Amount
+     double GoodPrice
+}
+class OrderDto
+{
+     Guid Id
+     Guid CustomerId
+     DateTime CreatedOn
+     Status Status
+     Guid CourierId
+     double TotalPrice
+     OrderType OrderType
+     PaymentType PaymentType
+}
+class SourceDto
+{
+     Guid Id
+     string Name
+}
+interface IGoodService
+{
+    Task<GoodDto> GetGoodByIdAsync(Guid id);
+    Task<IEnumerable<GoodDto>> GetAllGoodsAsync();
+    Task UpdateGoodAsync(GoodDto goodDto);
+    Task DeleteGoodByIdAsync(Guid id);
+    Task<GoodDto> CreateGoodAsync(GoodDto goodDto);
+    Task<IEnumerable<GoodDto>> GetAllGoodBySource(Guid sourceId);
+    Task AddToCart(Guid goodId, Guid customerId, int amount);
+}
+
+interface IGoodOrderService
+{
+    Task<GoodOrderDto> GetGoodOrderByIdAsync(Guid id);
+    Task<IEnumerable<GoodOrderDto>> GetAllGoodOrdersAsync();
+    Task UpdateGoodOrderAsync(GoodOrderDto goodDto);
+    Task DeleteGoodOrderByIdAsync(Guid id);
+}
+interface IMapper<TData, TDto>
+{
+    TData Map(TDto dtoEntity);
+    TDto Map(TData dataEntity);
+        
+    IEnumerable<TData> Map(IEnumerable<TDto> entities, Action<TData>? callback = null);
+    IEnumerable<TDto> Map(IEnumerable<TData> entities, Action<TDto>? callback = null);
+}
+interface IOrderService
+{
+    Task<OrderDto> GetOrderByIdAsync(Guid id);
+    Task<IEnumerable<OrderDto>> GetAllOrderAsync();
+    Task<OrderDto> CreateOrderAsync(OrderDto orderDto);
+    Task<IEnumerable<OrderDto>> GetOrderByUser(Guid userId);
+    Task<IEnumerable<OrderDto>> GetOrderByCourier(Guid courierId);
+    Task ChangeStatus(Guid id, Status status);
+}
+interface ISourceService
+{
+    Task<SourceDto> GetSourceByIdAsync(Guid id);
+    Task<IEnumerable<SourceDto>> GetAllSourcesAsync();
+    Task UpdateSourceAsync(SourceDto sourceDto);
+    Task DeleteSourceByIdAsync(Guid id);
+    Task<SourceDto> CreateSourceAsync(SourceDto sourceDto);
+}
+interface IUserService
+{
+    Task<UserDto> GetUserByIdAsync(Guid id);
+    Task<IEnumerable<UserDto>> GetAllUserAsync();
+    Task UpdateUserAsync(UserDto userDto);
+    Task DeleteUserByIdAsync(Guid id);
+    Task<UserDto> CreateUserAsync(UserDto userDto);
+}
+abstract class GenericMapper<TData, TDto>
+IMapper <|..GenericMapper
+class CustomerMapper
+GenericMapper <|.. CustomerMapper
+class CourierMapper
+GenericMapper <|.. CourierMapper
+class GoodMapper
+GenericMapper <|.. GoodMapper
+class GoodOrderMapper
+GenericMapper <|.. GoodOrderMapper
+class OrderMapper
+GenericMapper <|.. OrderMapper
+class SourceMapper
+GenericMapper <|.. SourceMapper
+class UserMapper
+GenericMapper <|.. UserMapper
+
+class GoodOrderService{
+    IUnitOfWork _unitOfWork;
+    GoodOrderMapper GoodOrderMapper
+}
+GoodOrderService <|.. IGoodOrderService
+GoodOrderService *-- GoodOrderMapper
+GoodOrderDto -- GoodOrderMapper
+class GoodService{
+    IUnitOfWork _unitOfWork;
+    GoodMapper GoodMapper
+}
+GoodService <|.. IGoodService
+GoodService *-- GoodMapper
+GoodDto -- GoodMapper
+class OrderService{
+    IUnitOfWork _unitOfWork;
+    OrderMapper OrderMapper
+}
+OrderService <|.. IOrderService
+OrderService *-- GoodMapper
+OrderDto -- GoodMapper
+class SourceService{
+    IUnitOfWork _unitOfWork;
+    SourceMapper SourceMapper
+}
+SourceService <|.. ISourceService
+SourceService *-- SourceMapper
+SourceDto -- SourceMapper
+class UserService{
+    IUnitOfWork _unitOfWork;
+    UserMapper UserMapper
+}
+UserService <|.. IUserService
+UserService *-- UserMapper
+UserDto -- UserMapper
+
+
+@enduml

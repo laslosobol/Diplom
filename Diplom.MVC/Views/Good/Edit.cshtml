@@ -1,0 +1,30 @@
+﻿@model Diplom.BLL.DTO.GoodDto
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>title</h2>
+
+<form asp-action="Edit" asp-controller="Good">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <input type="hidden" asp-for="Id" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">Name</label>
+        <input type="text" asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Price" class="control-label">Price</label>
+        <input type="text" asp-for="Price" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="SourceId" class="control-label">SourceId</label>
+        <input type="text" asp-for="SourceId" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-outline-secondary" />
+    </div>
+</form>

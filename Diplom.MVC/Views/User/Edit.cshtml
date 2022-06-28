@@ -1,0 +1,170 @@
+﻿@model Diplom.MVC.ViewModels.EditUserViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+@if (false)
+{
+    <h2>title</h2>
+
+    <form asp-action="Edit" asp-controller="User">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <input type="hidden" asp-for="Id"/>
+        </div>
+        <div class="form-group">
+            <label asp-for="Email" class="control-label">Email</label>
+            <input type="text" asp-for="Email" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Сохранить" class="btn btn-outline-secondary"/>
+        </div>
+    </form>
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Кошик</title>
+</head>
+<style>
+    body {
+        background: linear-gradient(89.99deg, #F1D9BC 7.87%, #B8ECDF 91.53%);
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }  
+    .profile {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        background: rgba(255, 255, 255, 0.5);
+        padding: 80px;
+        gap: 8px;
+    }
+    .profile-block {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0px;
+        gap: 36px;
+    }
+    .profile-block-title {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 36px;
+        line-height: 48px;
+        width: 100%;
+    }
+    .profile-block-subtitle {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        width: 100%;
+    }
+    .profile-block-field-outer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 0px;
+        gap: 16px;
+        width: 100%;
+    }
+    .profile-block-field-subtitle {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 20px;
+    }
+    .profile-block-field-value {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 0px;
+        gap: 48px;
+        
+        width: 500px;
+        height: 60px;
+    }
+    .profile-block-field-value {
+        
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 20px 36px 20px 24px;
+        gap: 16px;
+        width: 500px;
+        height: 60px;
+        background: #FFFFFF;
+        border: 2px solid #FFFFFF;
+        border-radius: 32px;
+    }
+    .profile-block-field-value-text {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 20px;
+    }
+    .profile-block-button-box {
+        display: flex;
+        margin-top: 1rem;
+        flex-direction: row;
+        align-items: flex-start;
+        padding: 0px;
+        gap: 36px;
+    }
+    .profile-block-button {
+        width: 180px;
+        height: 60px;
+        gap: 8px;
+        background: #B3E4D9;
+        border-radius: 32px;
+    }
+</style>
+
+<div class="profile">
+    <div class="profile-block">
+        <div class="profile-block-title">
+            <h1>Оновити інформацію</h1>
+        </div>
+        <div class="profile-block-subtitle">
+            <h4>На даній сторінці ви можете змінювати інформацію про себе. Старайтесь підтримувати  актуальну інформацію, щоб нашим кур’єрам було простіше вас знаходити.</h4>
+        </div>
+        <form asp-action="Edit" asp-controller="User">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <input type="hidden" asp-for="Id"/>
+            </div>
+            <div class="profile-block-field-outer">
+                <div class="profile-block-field-subtitle">
+                    <h4>Ім’я користувача</h4>
+                </div>
+                <input type="text" value="@Model.UserName" asp-for="UserName" class="profile-block-field-value"/>
+            </div>
+            <div class="profile-block-field-outer">
+                <div class="profile-block-field-subtitle">
+                    <h4>Номер телефону</h4>
+                </div>
+                <input type="text" value="@Model.PhoneNumber" asp-for="PhoneNumber" class="profile-block-field-value"/>
+            </div>
+            <div class="profile-block-field-outer">
+                <div class="profile-block-field-subtitle">
+                    <h4>Електронна адреса</h4>
+                </div>
+                <input type="text" value="@Model.Email" asp-for="Email" class="profile-block-field-value"/>
+            </div>
+            <div class="profile-block-button-box">
+                <input type="submit" value="Зберегти" class="profile-block-button">
+            </div>
+
+        </form>
+    </div>
+</div>

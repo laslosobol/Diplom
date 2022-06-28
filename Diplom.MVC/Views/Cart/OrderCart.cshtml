@@ -1,0 +1,396 @@
+﻿@model Diplom.MVC.ViewModels.OrderCartViewModel
+@* <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtsOlwTkruhPyPMv6zGdfkLRc5rZQqa5k"></script> *@
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+@if (false)
+{
+    <h2>title</h2>
+
+    <form asp-action="OrderCart" asp-controller="Cart">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <input id="Latitude" type="hidden" asp-for="Latitude"/>
+        </div>
+        <div class="form-group">
+            <input id="Longitude" type="hidden" asp-for="Longitude"/>
+        </div>
+        <div>
+            <input id="IsCardPayment" type="hidden" asp-for="IsCardPayment"/>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Order" class="btn btn-outline-secondary"/>
+        </div>
+    </form>
+
+    <div id="MapDiv" style="width: 500px; height: 500px">
+    </div>
+
+    <button onclick="cardPayment()">Pay With Card</button>
+
+    <script>
+function cardPayment() {
+  var block = document.getElementById("smart-button-container");
+  if (block.style.display === "none") {
+    document.getElementById("IsCardPayment").value = true;
+    block.style.display = "block";
+  } else {
+    document.getElementById("IsCardPayment").value = false;
+    block.style.display = "none";
+  }
+}
+</script>
+
+    <div id="smart-button-container">
+        <div style="text-align: center;">
+            <div id="paypal-button-container"></div>
+        </div>
+    </div>
+    <script src="https://www.paypal.com/sdk/js?client-id=AY1VP9Uy2J2Wdeu-7LvDMVfFlXH1ePAn-EYFwTk4gVpR423uB4r3_yaVFaWpb2qj_LmTHYzV9TEOdwuJ&enable-funding=venmo&currency=USD" data-sdk-integration-source="button-factory"></script>
+    <script>
+    function initPayPalButton() {
+      paypal.Buttons({
+        style: {
+          shape: 'pill',
+          color: 'gold',
+          layout: 'vertical',
+          label: 'checkout',
+          
+        },
+
+        createOrder: function(data, actions) {
+          return actions.order.create({
+            purchase_units: [{"amount":{"currency_code":"USD","value":@Model.TotalPrice}}]
+          });
+        },
+
+        onApprove: function(data, actions) {
+          return actions.order.capture().then(function(orderData) {
+            
+            // Full available details
+            console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+
+            // Show a success message within this page, e.g.
+            const element = document.getElementById('paypal-button-container');
+            element.innerHTML = '';
+            element.innerHTML = '<h3>Thank you for your payment!</h3>';
+
+            // Or go to another URL:  actions.redirect('thank_you.html');
+            
+          });
+        },
+
+        onError: function(err) {
+          console.log(err);
+        }
+      }).render('#paypal-button-container');
+    }
+    initPayPalButton();
+  </script>
+    <script>
+    $.ajax({
+        url: '/Cart/GoogleMap/',
+        type: 'GET',
+        success: function () {
+            initializeMap();
+        }
+    });
+    function initializeMap() {
+                //you can check your marker data in console
+                console.log();
+                //Create Google map options
+                var GoogleMapOptions = {
+                    center: new google.maps.LatLng(0, 0),
+                    zoom: 6,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                var infoWindow = new google.maps.InfoWindow();
+                var map = new google.maps.Map(document.getElementById("MapDiv"), GoogleMapOptions);
+                google.maps.event.addListener(map, "click", (event) =>{
+                    addMarker(event.latLng, map)
+                });
+            }
+    function addMarker(location, map){
+        new google.maps.Marker({
+            position: location,
+            draggable: true,
+            map: map
+        })
+        document.getElementById('Latitude').value = location.lat();
+        document.getElementById('Longitude').value = location.lng();
+    }
+    </script>
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Формування замовлення</title>
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtsOlwTkruhPyPMv6zGdfkLRc5rZQqa5k"></script>
+<style>
+    body {
+        background: linear-gradient(89.99deg, #F1D9BC 7.87%, #B8ECDF 91.53%);
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+    .order-box{
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
+    }
+    .order-box-content{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0;
+        gap: 40px;
+        margin-left: 61px;
+        margin-top: 54px;
+    }
+    .order-box-content-title{
+        font-size: 36px;
+        font-weight: bold;
+        font-family: Inter;
+        font-style: normal;
+    }
+    .order-box-content-description-block{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 0px;
+        gap: 16px;
+        width: 100%;
+    }
+    .order-box-content-description-block-title{
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 20px;
+        width: 100%;
+    }
+    .order-box-content-description-block-input-box{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 0px;
+        gap: 48px;
+        width: 100%;
+    }
+    .order-box-content-description-block-input{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 20px 36px 20px 24px;
+        gap: 16px;
+        box-sizing: border-box;
+        width: 100%;
+        background: #FFFFFF;
+        border: 2px solid #FFFFFF;
+        border-radius: 32px;
+    }
+    .order-box-content-details-block{
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        padding: 0px;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .order-box-content-details-block-paypal{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0px;
+        gap: 40px;
+    }
+    .order-box-content-details-block-paypal-title{
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 36px;
+        line-height: 48px;
+    }
+    .order-box-content-details-block-map{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0px;
+        gap: 40px;
+        margin-right: 3rem;
+    }
+    .order-box-content-details-block-map-title{
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 36px;
+        line-height: 48px;
+        width: 100%;
+    }
+    .order-box-content-details-block-paypal-form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 0px;
+        gap: 24px;
+        width: 100%;
+    }
+    .order-box-content-details-block-map-form {
+        box-sizing: border-box;
+        border-radius: 20px;
+        border: 2px solid;
+        border-image-source: linear-gradient(89.99deg, #F1D9BC 7.87%, #B8ECDF 91.53%);
+    }
+    .order-box-content-details-block-paypal-button {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: flex-end;
+        padding: 20px 16px;
+        gap: 8px;
+        background: linear-gradient(89.99deg, #F1D9BC 7.87%, #B8ECDF 91.53%);
+        border-radius: 32px;
+        width: 100%;
+        text-align: center;
+    }
+</style>
+<div class="order-box">
+    <form asp-action="OrderCart" asp-controller="Cart">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <input id="Latitude" type="hidden" asp-for="Latitude"/>
+        </div>
+        <div class="form-group">
+            <input id="Longitude" type="hidden" asp-for="Longitude"/>
+        </div>
+        <div class="form-group">
+            <input id="IsCardPayment" type="hidden" asp-for="IsCardPayment"/>
+        </div>
+        <div class="order-box-content">
+            <div class-="order-box-content-title">
+                <h1>Формування замовлення</h1>
+            </div>
+            <div class="order-box-content-description-block">
+                <div class="order-box-content-description-block-title">
+                    <h4>Опис</h4>
+                    <div class="order-box-content-description-block-input-box">
+                        <textarea class="order-box-content-description-block-input" id="Description" asp-for="Description">
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="order-box-content-details-block">
+                <div class="order-box-content-details-block-paypal">
+                    <div class="order-box-content-details-block-paypal-title">
+                        <h1>Оплата карткою</h1>
+                    </div>
+                    <div class="order-box-content-details-block-paypal-form">
+                        <div id="smart-button-container" style="width: 100%">
+                            <div style="text-align: center; width: 100%">
+                                <div id="paypal-button-container" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                        <script src="https://www.paypal.com/sdk/js?client-id=AY1VP9Uy2J2Wdeu-7LvDMVfFlXH1ePAn-EYFwTk4gVpR423uB4r3_yaVFaWpb2qj_LmTHYzV9TEOdwuJ&enable-funding=venmo&currency=USD" data-sdk-integration-source="button-factory"></script>
+                        <script>
+                        function initPayPalButton() {
+                            paypal.Buttons({
+                            style: {
+                            shape: 'pill',
+                            color: 'gold',
+                            layout: 'vertical',
+                            label: 'checkout',
+                        },
+                            createOrder: function(data, actions) {
+                                return actions.order.create({
+                                purchase_units: [{"amount":{"currency_code":"USD","value":@Model.TotalPrice}}]
+                            });
+                            },
+                            onApprove: function(data, actions) {
+                            return actions.order.capture().then(function(orderData) {
+                        
+                            // Full available details
+                            console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                        
+                            // Show a success message within this page, e.g.
+                            const element = document.getElementById('paypal-button-container');
+                            element.innerHTML = '';
+                            element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                            // $.ajax({
+                            //   type: 'POST',
+                            //   dataType: 'JSON',
+                            //   url: '/Cart/OrderCart/',
+                            //   data: {
+                            //     Latitude: document.getElementById('Latitude').value,
+                            //     Longitude: document.getElementById('Longitude').value,
+                            //     IsCardPayment: true,
+                            //     TotalPrice: document.getElementById('Latitude').value,
+                            //   },
+                            //   error: function (response){
+                            //         alert("Error: " + response);
+                            //     }
+                            // });
+                            // Or go to another URL:  actions.redirect('thank_you.html');
+                            });
+                        },
+                            onError: function(err) {
+                            console.log(err);
+                            }
+                            }).render('#paypal-button-container');
+                        }
+                        initPayPalButton();
+                    </script>
+                    </div>
+                    <input type="submit" value="Замовити" class="order-box-content-details-block-paypal-button"/>
+                </div>
+                <div class="order-box-content-details-block-map">
+                    <div class="order-box-content-details-block-map-title">
+                        <h1>Місце доставки</h1>
+                    </div>
+                    <div class="order-box-content-details-block-map-form">
+                        <div id="MapDiv" style="width: 500px; height: 500px">
+                        </div>
+                        <script>
+                        $.ajax({
+                            url: '/Cart/GoogleMap/',
+                            type: 'GET',
+                            success: function () {
+                            initializeMap();
+                            }
+                        });
+                        function initializeMap() {
+                            //you can check your marker data in console
+                            console.log();
+                            //Create Google map options
+                            var GoogleMapOptions = {
+                                center: new google.maps.LatLng(0, 0),
+                                zoom: 6,
+                                mapTypeId: google.maps.MapTypeId.ROADMAP
+                                };
+                            var infoWindow = new google.maps.InfoWindow();
+                            var map = new google.maps.Map(document.getElementById("MapDiv"), GoogleMapOptions);
+                            google.maps.event.addListener(map, "click", (event) =>{
+                                addMarker(event.latLng, map)
+                            });
+                        }
+                        function addMarker(location, map){
+                            new google.maps.Marker({
+                                position: location,
+                                draggable: true,
+                                map: map
+                            })
+                            document.getElementById('Latitude').value = location.lat();
+                            document.getElementById('Longitude').value = location.lng();
+                            }
+                    </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
